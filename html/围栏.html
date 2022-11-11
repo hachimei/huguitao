@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>围栏</title>
+</head>
+
+<body>
+    <div id="xmapBox"></div>
+
+    <script src="../dat.gui.js"></script>
+    <script src="../vmap.min.js"></script>
+    <script>
+        let map;
+
+        function mapInit() {
+
+        	map = new VMap.Map( '#xmapBox', {
+        		coordSystem: VMap.COORD_SYSTEM.GCJ02,
+        		// showTile: false,
+        		tileUrl: 'https://webst02.is.autonavi.com/appmaptile?style=7&x=${x}&y=${y}&z=${z}',
+
+        		colorMapping: {
+        			'steps': [ 0, 0.5, 1 ],
+        			'colors': [ '#000c2b', '#8196ad', '#001c37' ]
+        		},
+
+        		// data: location.origin + '/static/data/donglong.json',
+        		// data: location.origin + '/static/data/0606.json',
+
+        		isFlyHome: true,
+        		modelId: '1547515098268839938',
+        		themeId: '1533653243569192962',
+        		dollyDistance: 5000,
+        		zoom: 0.18,
+        		minDistance: - 1 / 0,
+        		maxDistance: 1 / 0,
+        		cache: false,
+        		showAllFloors: false,
+        		// 显示罗盘
+        		showCompass: true,
+        		// 是否支持编辑主题
+        		mapEditing: true,
+        		// compassUrl: '//i.postimg.cc/BnL5Yjj2/compass.png'
+        		// 静态文件地址
+        		baseUrl: location.origin + '/static/images',
+        		// 雪碧图地址
+        		spriteUrl: location.origin + '/static/images/s.png',
+        		minScale: 0.05,
+        		center: [ 6388.4838788089655, - 11766.569141586551, 0 ],
+        		position: [ 16422.055265581555, - 25327.105435068872, 19671.699536790802 ],
+        		draco: {
+        			path: location.origin + '/static/draco/',
+        			config: { type: 'js' }
+        		}
+        	} );
+
+        	// map.load(location.origin + '/static/data/0529.json')
+        	// map.load(location.origin + '/static/data/0530.json')
+        	// map.load( location.origin + '/static/data/0606.json' );
+
+        	map.on( 'mapLoaded', () => {
+
+        		console.log( 'map loaded:' );
+
+        		// map.rotateTo( { angle: 0 } );
+
+        		map.$compassWrapper.onclick = function () {
+
+        			map.rotateTo( { angle: 180, duration: 1000.0 } );
+
+        		};
+
+        		initGUI();
+
+        	} );
+
+
+        }
+
+
+        mapInit();
+
+var extentWall;
+var extentWall2;
+        var Options = function () {
+
+	// 增加特效
+	this.addEffect = function () {
+
+		if ( extentWall ) {
+
+			map.extentWallEffect.removeEffect( map, extentWall );
+			extentWall = null;
+
+		}
+
+		if ( extentWall2 ) {
+
+			map.extentWallEffect.removeEffect( map, extentWall2 );
+			extentWall2 = null;
+			return;
+
+		}
+
+		const options = {
+			'baseHeight': 30, 'color': '#ff73fb', 'wallHeight': 100,
+			extentList: [
+				{
+					'id': 'aa',
+					// 'points': [ { 'x': 12682550.469806293, 'y': 2574603.046190589 }, { 'x': 12683191.06182497, 'y': 2574586.4313951177 }, { 'x': 12683276.16095984, 'y': 2574574.495409414 }, { 'x': 12683319.357197555, 'y': 2574539.767368027 }, { 'x': 12683325.77467516, 'y': 2574482.2492204756 }, { 'x': 12683118.11258042, 'y': 2573871.759914894 }, { 'x': 12682382.239682449, 'y': 2574051.7518828684 }, { 'x': 12682388.762651155, 'y': 2574226.614078739 }, { 'x': 12682431.106764657, 'y': 2574423.1609533066 } ] }, { 'id': 'bb', 'points': [ { 'x': 12682000.29918859, 'y': 2575178.2013945794 }, { 'x': 12682033.27641977, 'y': 2575201.551488604 }, { 'x': 12682167.081258867, 'y': 2575124.8784657125 }, { 'x': 12682467.359864585, 'y': 2575077.999177787 }, { 'x': 12682641.505607314, 'y': 2575049.0133295665 }, { 'x': 12682644.490043977, 'y': 2575010.6767800725 }, { 'x': 12682511.16670433, 'y': 2574730.266505947 }, { 'x': 12682453.971188964, 'y': 2574701.56927065 }, { 'x': 12682068.100823615, 'y': 2574801.3272913676 }, { 'x': 12682036.794530155, 'y': 2574857.283617842 }, { 'x': 12682006.40215092, 'y': 2575025.9866213766 } ] }
+					'points': [
+						{ x: 300, y: 300, z: 0 },
+						{ x: 300, y: - 300, z: 0 },
+						{ x: - 300, y: - 300, z: 0 },
+						{ x: - 300, y: 300, z: 0 },
+						{ x: 300, y: 300, z: 0 },
+					]
+				} ],
+			'isShine': false,
+			// 'groundColor': '#ff73fb'
+		};
+
+		const options2 = {
+			'baseHeight': 30, 'color': '#ff73fb', 'wallHeight': 100,
+			scrollImgUrl: location.origin + '/static/images/' + 'wall_warning.png',
+			extentList: [
+				{
+					'id': 'aa',
+					// 'points': [ { 'x': 12682550.469806293, 'y': 2574603.046190589 }, { 'x': 12683191.06182497, 'y': 2574586.4313951177 }, { 'x': 12683276.16095984, 'y': 2574574.495409414 }, { 'x': 12683319.357197555, 'y': 2574539.767368027 }, { 'x': 12683325.77467516, 'y': 2574482.2492204756 }, { 'x': 12683118.11258042, 'y': 2573871.759914894 }, { 'x': 12682382.239682449, 'y': 2574051.7518828684 }, { 'x': 12682388.762651155, 'y': 2574226.614078739 }, { 'x': 12682431.106764657, 'y': 2574423.1609533066 } ] }, { 'id': 'bb', 'points': [ { 'x': 12682000.29918859, 'y': 2575178.2013945794 }, { 'x': 12682033.27641977, 'y': 2575201.551488604 }, { 'x': 12682167.081258867, 'y': 2575124.8784657125 }, { 'x': 12682467.359864585, 'y': 2575077.999177787 }, { 'x': 12682641.505607314, 'y': 2575049.0133295665 }, { 'x': 12682644.490043977, 'y': 2575010.6767800725 }, { 'x': 12682511.16670433, 'y': 2574730.266505947 }, { 'x': 12682453.971188964, 'y': 2574701.56927065 }, { 'x': 12682068.100823615, 'y': 2574801.3272913676 }, { 'x': 12682036.794530155, 'y': 2574857.283617842 }, { 'x': 12682006.40215092, 'y': 2575025.9866213766 } ] }
+					'points': [
+						{ x: 500, y: 500, z: 0 },
+						{ x: 500, y: - 500, z: 0 },
+						{ x: - 500, y: - 500, z: 0 },
+						{ x: - 500, y: 500, z: 0 },
+						{ x: 500, y: 500, z: 0 },
+					]
+				} ],
+			'isShine': false,
+			// 'groundColor': '#ff73fb'
+		};
+
+		extentWall = map.extentWallEffect.addEffect( map, options );
+		extentWall2 = map.extentWallEffect.addEffect( map, options2 );
+		map.moveTo( extentWall );
+
+	};
+
+};
+
+var options = new Options();
+
+function initGUI() {
+
+	const gui = new dat.GUI();
+
+	// 默认
+	options.addEffect();
+
+	const keys = Object.keys( options );
+	const names = [ '围栏显示/隐藏' ];
+
+	keys.forEach( ( k, i ) => {
+
+		gui.add( options, k ).name( names[ i ] );
+
+	} );
+
+
+
+}
+
+    </script>
+</body>
+
+</html>

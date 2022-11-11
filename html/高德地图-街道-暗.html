@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>高德地图-街道-暗</title>
+</head>
+
+<body>
+    <div id="xmapBox"></div>
+
+    <script src="../dat.gui.js"></script>
+    <script src="../vmap.min.js"></script>
+    <script>
+        let map;
+
+        function mapInit() {
+
+        	map = new VMap.Map( '#xmapBox', {
+        		coordSystem: VMap.COORD_SYSTEM.GCJ02,
+        		// showTile: false,
+        		tileUrl: 'https://webst02.is.autonavi.com/appmaptile?style=7&x=${x}&y=${y}&z=${z}',
+
+        		colorMapping: {
+        			'steps': [ 0, 0.5, 1 ],
+        			'colors': [ '#000c2b', '#8196ad', '#001c37' ]
+        		},
+
+        		// data: location.origin + '/static/data/donglong.json',
+        		// data: location.origin + '/static/data/0606.json',
+
+        		isFlyHome: true,
+        		modelId: '1547515098268839938',
+        		themeId: '1533653243569192962',
+        		dollyDistance: 5000,
+        		zoom: 0.18,
+        		minDistance: - 1 / 0,
+        		maxDistance: 1 / 0,
+        		cache: false,
+        		showAllFloors: false,
+        		// 显示罗盘
+        		showCompass: true,
+        		// 是否支持编辑主题
+        		mapEditing: true,
+        		// compassUrl: '//i.postimg.cc/BnL5Yjj2/compass.png'
+        		// 静态文件地址
+        		baseUrl: location.origin + '/static/images',
+        		// 雪碧图地址
+        		spriteUrl: location.origin + '/static/images/s.png',
+        		minScale: 0.05,
+        		center: [ 6388.4838788089655, - 11766.569141586551, 0 ],
+        		position: [ 16422.055265581555, - 25327.105435068872, 19671.699536790802 ],
+        		draco: {
+        			path: location.origin + '/static/draco/',
+        			config: { type: 'js' }
+        		}
+        	} );
+
+        	// map.load(location.origin + '/static/data/0529.json')
+        	// map.load(location.origin + '/static/data/0530.json')
+        	// map.load( location.origin + '/static/data/0606.json' );
+
+        	map.on( 'mapLoaded', () => {
+
+        		console.log( 'map loaded:' );
+
+        		// map.rotateTo( { angle: 0 } );
+
+        		map.$compassWrapper.onclick = function () {
+
+        			map.rotateTo( { angle: 180, duration: 1000.0 } );
+
+        		};
+
+
+        	} );
+
+        	map.on( 'click', e => {
+
+        		console.log( 'click obj is next line:' );
+        		console.log( e );
+        		if ( e.target ) {
+
+        			map.transformObject( e.target.object );
+
+        		}
+
+        		const obj = e.target ? e.target.object : null;
+        		if ( obj && obj.isModel3D ) {
+
+        			console.log( map.gltfMergeTool.getFaceIndexToGroup( e.target.faceIndex, e.target.object.geometry.userData.groupData ) );
+        			map.gltfMergeTool.selectModel( e.target.faceIndex, e.target.object );
+
+        		}
+
+        	} );
+
+        }
+
+
+        mapInit();
+    </script>
+</body>
+
+</html>
