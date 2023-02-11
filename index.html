@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>My Site</title>
+		<title>xmap / examples</title>
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="files/main.css">
 		<style>
@@ -38,7 +38,7 @@
 		<div id="panel">
 
 			<div id="header">
-				<h1>VMap</h1>
+				<h1>XMap</h1>
 
 				<div id="sections">
 					<span class="selected">examples</span>
@@ -125,8 +125,19 @@
 
 			var link = document.createElement( 'a' );
 			link.className = 'link';
-			link.href = 'html/' + file + '.html';
-			link.textContent = getName( file );
+		
+			if ( file === 'glsl' ) {
+
+				link.href = 'glsl/index.html';
+				link.textContent = 'glsl';
+		
+	} else {
+
+				link.href = 'html/' + file + '.html';
+				link.textContent = getName( file );
+		
+	}
+
 			link.setAttribute( 'target', 'viewer' );
 			link.addEventListener( 'click', function ( event ) {
 
